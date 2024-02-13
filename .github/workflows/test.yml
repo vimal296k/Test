@@ -6,22 +6,25 @@ on:
 
 jobs:
   build:
+    name: Lint
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Print Hello World
-        run: echo "Hello, World!"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v4
         with:
-          node-version: '14'
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Prettier
-        run: npx prettier --check .
+      - name: Super-linter
+        uses: super-linter/super-linter@v6.0.0  # x-release-please-version
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
