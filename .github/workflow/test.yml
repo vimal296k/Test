@@ -1,0 +1,23 @@
+name: SonarQube Scan
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  sonarqube:
+    name: SonarQube Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup SonarQube Scanner
+      uses: SonarSource/sonarcloud-github-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # You need to store the SonarQube token in GitHub Secrets
+        
+    - name: Run SonarQube Scan
+      run: sonar-scanner
