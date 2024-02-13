@@ -1,0 +1,12 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "Test project",
+  "scripts": {
+    "test": "echo 'No tests specified'",
+    "prettier": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
+  }
+}
