@@ -1,27 +1,31 @@
-name: ShellCheck with Email
+name: Super Linter with Email
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   lint:
-    name: Lint Shell Scripts
+    name: Lint codebase
     runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install ShellCheck
-        run: sudo apt-get install -y shellcheck
+      - name: Run Super Linter
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+      - name: Save Super Linter output
+        run: echo "$GITHUB_ACTION_PATH" > linter_output.txt
 
-      - name: Run ShellCheck
-        run: shellcheck **/*.sh > shellcheck_output.txt || true
-
-      - name: Save ShellCheck output as artifact
+      - name: Save Super Linter output as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: shellcheck-output
-          path: shellcheck_output.txt
+          name: linter-output
+          path: linter_output.txt
