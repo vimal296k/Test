@@ -1,4 +1,4 @@
-name: Super Linter with Report
+name: Super Linter with Email
 
 on:
   push:
@@ -21,26 +21,11 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: true
+      - name: Save Super Linter output
+        run: echo "$GITHUB_ACTION_PATH" > linter_output.txt
 
-      # Add steps to install dependencies for generating report
-      - name: Install Python and dependencies
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Install required packages
-        run: |
-          pip install reportlab  # or any other dependencies needed for generating the report
-          
-      # Run script to generate report
-      - name: Generate Report
-        run: |
-          # Write a script to extract data from Super Linter output and generate report
-          # For example, you can use Python script to generate PDF report using ReportLab
-          python generate_report.py
-
-      # Upload the generated report as an artifact
-      - name: Upload report
+      - name: Save Super Linter output as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: code-analysis-report
-          path: report.pdf  # Change this path to the actual location of your report
+          name: linter-output
+          path: linter_output.txt
