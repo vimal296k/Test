@@ -15,7 +15,10 @@ def extract_data(linter_output):
     lines = linter_output.split('\n')
     for line in lines:
         if '[ERROR]' in line or '[FATAL]' in line:
-            error_message = line.split('[ERROR]')[1].strip() if '[ERROR]' in line else line.split('[FATAL]')[1].strip()
+            if '[ERROR]' in line:
+                error_message = line.split('[ERROR]')[1].strip()
+            elif '[FATAL]' in line:
+                error_message = line.split('[FATAL]')[1].strip()
             errors.append(error_message)
     return errors
 
