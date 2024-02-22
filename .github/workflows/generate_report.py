@@ -11,11 +11,13 @@ def read_linter_output(file_path):
 
 def extract_data(linter_output):
     # Parse the Super Linter output and extract relevant data
-    # Modify this function according to the structure of your Super Linter output
-    # For example, you might extract file names, error messages, line numbers, etc.
-    # For demonstration purposes, let's assume we're extracting a list of files with errors
-    files_with_errors = [line.split(':')[0].strip() for line in linter_output.split('\n') if 'error' in line.lower()]
-    return files_with_errors
+    errors = []
+    lines = linter_output.split('\n')
+    for line in lines:
+        if '[ERROR]' in line or '[FATAL]' in line:
+            error_message = line.split('[ERROR]')[1].strip()
+            errors.append(error_message)
+    return errors
 
 def generate_pdf_report(data):
     # Generate a PDF report using the extracted data
